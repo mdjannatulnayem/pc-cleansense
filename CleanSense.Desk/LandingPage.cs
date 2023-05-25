@@ -16,5 +16,10 @@ namespace CleanSense.Desk
         {
             InitializeComponent();
         }
+
+        private void btn_conn_disconn_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
