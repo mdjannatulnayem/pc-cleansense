@@ -24,6 +24,8 @@ namespace CleanSense.Desk
 
         int sum = 0;
 
+        DateTime lastSendTime = DateTime.Now;
+
         public LandingPage()
         {
             InitializeComponent();
@@ -87,44 +89,75 @@ namespace CleanSense.Desk
                 smoke_out.Text = serial.smoke.ToString();
                 mst_out.Text = serial.moist.ToString();
 
-                if(core_avg.Value > 95)
+                if (core_avg.Value > 95)
                 {
                     debug.Text += "# CPU TEMPERATURE TOO HIGH!\n";
-                    SystemNotifier.Notify("CleanSense","CPU temperature reaching too high!",notifyIcon1);
-                    alert_sent[0] = true;
+                    if (!alert_sent[0] || (alert_sent[0] && (DateTime.Now - lastSendTime).TotalMinutes > 2))
+                    {
+                        SystemNotifier.Notify("CleanSense", "CPU temperature reaching too high!", notifyIcon1);
+                        alert_sent[0] = true;
+                        lastSendTime = DateTime.Now;
+                    }
                 }
+
                 if (serial.t > 45)
                 {
                     debug.Text += "# SYSTEM TEMPERATURE TOO HIGH!\n";
-                    SystemNotifier.Notify("CleanSense", "System temperature reaching too high!", notifyIcon1);
-                    alert_sent[1] = true;
+                    if (!alert_sent[1] || (alert_sent[1] && (DateTime.Now - lastSendTime).TotalMinutes > 5))
+                    {
+                        SystemNotifier.Notify("CleanSense", "System temperature reaching too high!", notifyIcon1);
+                        alert_sent[1] = true;
+                        lastSendTime = DateTime.Now;
+                    }
                 }
+
                 if (serial.vb > 10)
                 {
                     debug.Text += "# MIGHT HAVE GROWN DUST ON COOLING FANS!\n";
-                    SystemNotifier.Notify("CleanSense", "Might have grown dust on cooling fans!", notifyIcon1);
-                    alert_sent[2] = true;
+                    if (!alert_sent[2] || (alert_sent[2] && (DateTime.Now - lastSendTime).TotalMinutes > 10))
+                    {
+                        SystemNotifier.Notify("CleanSense", "Might have grown dust on cooling fans!", notifyIcon1);
+                        alert_sent[2] = true;
+                        lastSendTime = DateTime.Now;
+                    }
                 }
+
                 if (serial.dust > 400)
                 {
                     debug.Text += "# SYSTEM HAS GROWN DUST!\n";
                     debug.Text += "# REQUIRES CLEANING!\n";
-                    SystemNotifier.Notify("CleanSense", "Requires cleaning! System has grown dust!", notifyIcon1);
-                    alert_sent[3] = true;
+                    if (!alert_sent[3] || (alert_sent[3] && (DateTime.Now - lastSendTime).TotalMinutes > 5))
+                    {
+                        SystemNotifier.Notify("CleanSense", "Requires cleaning! System has grown dust!", notifyIcon1);
+                        alert_sent[3] = true;
+                        lastSendTime = DateTime.Now;
+                    }
+
                 }
+
                 if (serial.smoke > 650)
                 {
                     debug.Text += "# SMOKE DETECTED!\n";
                     debug.Text += "# REQUIRES CLEANING!\n";
-                    SystemNotifier.Notify("CleanSense", "Requires cleaning! System has grown dust!", notifyIcon1);
-                    alert_sent[4] = true;
+                    if (!alert_sent[4] || (alert_sent[4] && (DateTime.Now - lastSendTime).TotalMinutes > 3))
+                    {
+                        SystemNotifier.Notify("CleanSense", "Requires cleaning! System has grown dust!", notifyIcon1);
+                        alert_sent[4] = true;
+                        lastSendTime = DateTime.Now;
+                    }
                 }
+
                 if (serial.moist > 88)
                 {
                     debug.Text += "# TOO MUCH HUMID INSIDE THE SYSTEM!\n";
-                    SystemNotifier.Notify("CleanSense", "Too much humidity!", notifyIcon1);
-                    alert_sent[5] = true;
+                    if (!alert_sent[5] || (alert_sent[5] && (DateTime.Now - lastSendTime).TotalMinutes > 5))
+                    {
+                        SystemNotifier.Notify("CleanSense", "Too much humidity!", notifyIcon1);
+                        alert_sent[5] = true;
+                        lastSendTime = DateTime.Now;
+                    }
                 }
+
                 // Done...!
             }
         }
