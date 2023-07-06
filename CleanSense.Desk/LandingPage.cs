@@ -4,6 +4,7 @@ using CleanSense.Desk.Services.Contracts;
 using CleanSense.Desk.Utility;
 using Newtonsoft.Json;
 using System;
+using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -108,6 +109,12 @@ namespace CleanSense.Desk
                         SystemNotifier.Notify("CleanSense", "System temperature reaching too high!", notifyIcon1);
                         alert_sent[1] = true;
                         lastSendTime = DateTime.Now;
+                    }
+
+                    if (serial.t > 65) 
+                    {
+                        MessageBox.Show("System overhitting!Attempting immediate shutdown!");
+                        Process.Start("shutdown", "/s /t 10"); 
                     }
                 }
 
