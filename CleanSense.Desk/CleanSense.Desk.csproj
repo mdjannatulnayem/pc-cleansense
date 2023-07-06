@@ -32,7 +32,16 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenHardwareMonitorLib">
+      <HintPath>..\..\..\Juicebox\openhardwaremonitor-v0.9.6\OpenHardwareMonitor\OpenHardwareMonitorLib.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -52,8 +61,13 @@
     <Compile Include="LandingPage.Designer.cs">
       <DependentUpon>LandingPage.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\CpuData.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Models\SerialData.cs" />
+    <Compile Include="Services\Contracts\ISystemInfoService.cs" />
+    <Compile Include="Services\SystemInfoService.cs" />
+    <Compile Include="Utility\SystemNotifier.cs" />
     <EmbeddedResource Include="LandingPage.resx">
       <DependentUpon>LandingPage.cs</DependentUpon>
     </EmbeddedResource>
@@ -67,6 +81,8 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="app.manifest" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -82,6 +98,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Final_Swadheen_17.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\vibration_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dust_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\smoke_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\humidity_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\notify.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

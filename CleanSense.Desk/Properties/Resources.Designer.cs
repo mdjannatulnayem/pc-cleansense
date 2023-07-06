@@ -63,9 +63,49 @@ namespace CleanSense.Desk.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap dust_icon {
+            get {
+                object obj = ResourceManager.GetObject("dust_icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Final_Swadheen_17 {
             get {
                 object obj = ResourceManager.GetObject("Final_Swadheen_17", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap humidity_icon {
+            get {
+                object obj = ResourceManager.GetObject("humidity_icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap smoke_icon {
+            get {
+                object obj = ResourceManager.GetObject("smoke_icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap vibration_icon {
+            get {
+                object obj = ResourceManager.GetObject("vibration_icon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
