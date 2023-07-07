@@ -85,9 +85,7 @@ namespace CleanSense.Desk
 
                 if (core_avg.Value > 95)
                 {
-                    debug.Text += "# CPU TEMPERATURE TOO HIGH!\n";
-                    debug.SelectionStart = debug.Text.Length;
-                    debug.ScrollToCaret();
+                    writeLog("REQUIRES CLEANING!");
                     if (!alert_sent[0] || (alert_sent[0] && (DateTime.Now - lastSendTime).TotalMinutes > 2))
                     {
                         SystemNotifier.Notify("CleanSense", "CPU temperature reaching too high!", notifyIcon1);
@@ -98,9 +96,8 @@ namespace CleanSense.Desk
 
                 if (serial.t > 45)
                 {
-                    debug.Text += "# SYSTEM TEMPERATURE TOO HIGH!\n";
-                    debug.SelectionStart = debug.Text.Length;
-                    debug.ScrollToCaret();
+                    writeLog("REQUIRES CLEANING!");
+                    
                     if (!alert_sent[1] || (alert_sent[1] && (DateTime.Now - lastSendTime).TotalMinutes > 5))
                     {
                         SystemNotifier.Notify("CleanSense", "System temperature reaching too high!", notifyIcon1);
@@ -117,9 +114,7 @@ namespace CleanSense.Desk
 
                 if (serial.vb > 10)
                 {
-                    debug.Text += "# MIGHT HAVE GROWN DUST ON COOLING FANS!\n";
-                    debug.SelectionStart = debug.Text.Length;
-                    debug.ScrollToCaret();
+                    writeLog("REQUIRES CLEANING!");
                     if (!alert_sent[2] || (alert_sent[2] && (DateTime.Now - lastSendTime).TotalMinutes > 10))
                     {
                         SystemNotifier.Notify("CleanSense", "Might have grown dust on cooling fans!", notifyIcon1);
@@ -130,8 +125,8 @@ namespace CleanSense.Desk
 
                 if (serial.dust > 400)
                 {
-                    debug.Text += "# SYSTEM HAS GROWN DUST!\n";
-                    debug.Text += "# REQUIRES CLEANING!\n";
+                    writeLog("SYSTEM HAS GROWN DUST!");
+                    writeLog("REQUIRES CLEANING!");
                     if (!alert_sent[3] || (alert_sent[3] && (DateTime.Now - lastSendTime).TotalMinutes > 5))
                     {
                         SystemNotifier.Notify("CleanSense", "Requires cleaning! System has grown dust!", notifyIcon1);
@@ -143,10 +138,8 @@ namespace CleanSense.Desk
 
                 if (serial.smoke > 650)
                 {
-                    debug.Text += "# SMOKE DETECTED!\n";
-                    debug.Text += "# REQUIRES CLEANING!\n";
-                    debug.SelectionStart = debug.Text.Length;
-                    debug.ScrollToCaret();
+                    writeLog("SMOKE DETECTED!");
+                    writeLog("REQUIRES CLEANING!");
                     if (!alert_sent[4] || (alert_sent[4] && (DateTime.Now - lastSendTime).TotalMinutes > 3))
                     {
                         SystemNotifier.Notify("CleanSense", "Requires cleaning! System has grown dust!", notifyIcon1);
@@ -157,9 +150,7 @@ namespace CleanSense.Desk
 
                 if (serial.moist > 88)
                 {
-                    debug.Text += "# TOO MUCH HUMID INSIDE THE SYSTEM!\n";
-                    debug.SelectionStart = debug.Text.Length;
-                    debug.ScrollToCaret();
+                    writeLog("TOO MUCH HUMID INSIDE THE SYSTEM!");
                     if (!alert_sent[5] || (alert_sent[5] && (DateTime.Now - lastSendTime).TotalMinutes > 5))
                     {
                         SystemNotifier.Notify("CleanSense", "Too much humidity!", notifyIcon1);
@@ -186,7 +177,7 @@ namespace CleanSense.Desk
             }
             catch (Exception ex)
             {
-                debug.Text += $"> Timeout reading from serial port: {ex.Message}\n";
+                writeLog($"Timeout reading from serial port: {ex.Message}");
                 return null;
             }
         }
@@ -196,6 +187,13 @@ namespace CleanSense.Desk
             string str = null;
             str = UsbSerial.ReadLine();
             return str;
+        }
+
+        private void writeLog(string log)
+        {
+            debug.Text += $"//{log}\n";
+            debug.SelectionStart = debug.Text.Length;
+            debug.ScrollToCaret();
         }
 
 
