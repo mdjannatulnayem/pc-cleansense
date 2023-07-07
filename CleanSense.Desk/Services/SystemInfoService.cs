@@ -2,6 +2,7 @@
 using CleanSense.Desk.Services.Contracts;
 using OpenHardwareMonitor.Hardware;
 using System;
+using System.Collections.Generic;
 
 namespace CleanSense.Desk.Services
 {
@@ -11,7 +12,10 @@ namespace CleanSense.Desk.Services
         {
             try
             {
-                CpuData cpu = new CpuData() { CoreCount = 0 };
+                CpuData cpu = new CpuData() {
+                    CoreCount = 0,
+                    CoreTemps = new Dictionary<int,int>()
+                };
                 Computer device = new Computer() { CPUEnabled = true };
                 device.Open();
 
