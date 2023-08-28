@@ -43,19 +43,20 @@ namespace CleanSense.Desk
                     if (UsbSerial.IsOpen)
                     {
                         connected = true;
-                        debug.Text += $"> Connected to {port}\n";
+                        writeLog($"Connected to {port}");
                         conn_status.Text = "Connected";
                         btn_conn_disconn.Text = "Cut off";
+                        for (int i = 0; i < 1000; i++);
                     }
                     else
                     {
-                        debug.Text += $"> Couldn't connect!\n";
+                        writeLog($"Couldn't connect!");
                     }
                 }
                 catch (Exception ex)
                 {
 
-                    debug.Text += $"> {ex.Message}\n";
+                    writeLog($"{ex.Message}");
                 }
             }
             else
@@ -72,16 +73,19 @@ namespace CleanSense.Desk
             if (connected)
             {               
                 serial = await ReadSerialDataAsync();
-                cpu_t = systemInfoService.getCpuInformation();
-                for (int i = 0; i < 1000; i++);
-
-                core_avg.Value = cpu_t.CoreTemps[2];
-                if (serial is null) return;
+                UsbSerial.WriteLine("*");
+                cpu_t = await systemInfoService.GetCpuInformationAsync();
+                
+                if (serial is null)
+                    return;
                 sys_t.Value = serial.t;
                 vbr_out.Text = serial.vb.ToString();
                 dust_out.Text = serial.dust.ToString();
                 smoke_out.Text = serial.smoke.ToString();
                 mst_out.Text = serial.moist.ToString();
+                if (cpu_t.CoreCount == 0) 
+                    return;
+                core_avg.Value = cpu_t.CoreTemps[cpu_t.CoreCount-1];
 
                 if (core_avg.Value > 95)
                 {
@@ -92,6 +96,7 @@ namespace CleanSense.Desk
                         alert_sent[0] = true;
                         lastSendTime = DateTime.Now;
                     }
+                    UsbSerial.WriteLine("A");
                 }
 
                 if (serial.t > 45)
@@ -104,6 +109,8 @@ namespace CleanSense.Desk
                         alert_sent[1] = true;
                         lastSendTime = DateTime.Now;
                     }
+
+                    UsbSerial.WriteLine("A");
 
                     if (serial.t > 65) 
                     {
@@ -121,6 +128,7 @@ namespace CleanSense.Desk
                         alert_sent[2] = true;
                         lastSendTime = DateTime.Now;
                     }
+                    UsbSerial.WriteLine("A");
                 }
 
                 if (serial.dust > 400)
@@ -134,6 +142,8 @@ namespace CleanSense.Desk
                         lastSendTime = DateTime.Now;
                     }
 
+                    UsbSerial.WriteLine("A");
+
                 }
 
                 if (serial.smoke > 650)
@@ -146,9 +156,11 @@ namespace CleanSense.Desk
                         alert_sent[4] = true;
                         lastSendTime = DateTime.Now;
                     }
+                    UsbSerial.WriteLine("A");
+
                 }
 
-                if (serial.moist > 88)
+                if (serial.moist > 99)
                 {
                     writeLog("TOO MUCH HUMID INSIDE THE SYSTEM!");
                     if (!alert_sent[5] || (alert_sent[5] && (DateTime.Now - lastSendTime).TotalMinutes > 5))
@@ -157,6 +169,7 @@ namespace CleanSense.Desk
                         alert_sent[5] = true;
                         lastSendTime = DateTime.Now;
                     }
+                    UsbSerial.WriteLine("A");
                 }
 
                 // Done...!
@@ -177,7 +190,7 @@ namespace CleanSense.Desk
             }
             catch (Exception ex)
             {
-                writeLog($"Timeout reading from serial port: {ex.Message}");
+                writeLog($"Exception while reading data: {ex.Message}");
                 return null;
             }
         }

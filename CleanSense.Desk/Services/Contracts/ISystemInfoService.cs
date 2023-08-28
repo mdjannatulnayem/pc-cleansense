@@ -1,9 +1,10 @@
 ﻿using CleanSense.Desk.Models;
+using System.Threading.Tasks;
 
 namespace CleanSense.Desk.Services.Contracts
 {
     public interface ISystemInfoService
     {
-        CpuData getCpuInformation();
+        Task<CpuData> GetCpuInformationAsync();
     }
 }
